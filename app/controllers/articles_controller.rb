@@ -5,17 +5,21 @@ class ArticlesController < ApplicationController
     end
 
     def index
-      @articles = Article.all  
+      @article = Article.all  
     end
 
     def new
-    #   @articles = Article.all  
+      @article = Article.new
     end
 
     def create
-        @articles = Article.new(params.require(:article).permit(:title, :description))
-        @articles.save
-        redirect_to @articles
+        @article = Article.new(params.require(:article).permit(:title, :description))
+        if @article.save
+          flash[:notice] = "Article was created successfully."
+          redirect_to @article 
+        else
+          render "new", status: :unprocessable_entity 
+        end
     end
 
 end
